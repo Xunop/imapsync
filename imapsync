@@ -16496,16 +16496,16 @@ sub imapsync_version_public
                 . ", Mail::IMAPClient $Mail::IMAPClient::VERSION"
                 . " $imapsync_basename"
                 . " $context" ;
-        my $sock = IO::Socket::INET->new(
+        my $sock = IO::Socket::SSL->new(
                 PeerAddr => 'imapsync.lamiral.info',
-                PeerPort => 80,
+                PeerPort => 443,
                 Proto    => 'tcp',
                 ) ;
         return( 'unknown' ) if not $sock ;
         print $sock
-                "GET /prj/imapsync/VERSION HTTP/1.0\r\n",
+                "GET /VERSION HTTP/1.0\r\n",
                 "User-Agent: imapsync/$local_version ($agent_info)\r\n",
-                "Host: ks.lamiral.info\r\n\r\n" ;
+                "Host: imapsync.lamiral.info\r\n\r\n" ;
         my @line = <$sock> ;
         close $sock ;
         my $last_release = $line[$LAST] ;
@@ -16535,7 +16535,7 @@ sub not_long_imapsync_version_public
         }
 
         my $ret = eval {
-                alarm 3 ;
+                alarm 20 ;
                 {
                         $val = imapsync_version_public(  ) ;
                         #sleep 4 ;
