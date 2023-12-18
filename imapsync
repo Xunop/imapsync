@@ -8053,6 +8053,8 @@ sub tests_compress_ssl
         $acc->{ compress }  = 1 ;
         $acc->{ N }  = 'K' ;
         
+        Readonly $SSL_VERIFY_POLICY => IO::Socket::SSL::SSL_VERIFY_NONE(  ) ;
+
         ok(
                 $myimap = login_imap( 'test1.lamiral.info', 993, 'test1', 'secret1',
                 1, undef,
@@ -8204,6 +8206,9 @@ sub tests_login_imap
         # Verify return code: 9 (certificate is not yet valid)
         # Fix: /etc/init.d/openntpd restart
         # 2021_09_04 done 
+
+        Readonly $SSL_VERIFY_POLICY => IO::Socket::SSL::SSL_VERIFY_NONE(  ) ;
+
         ok(
                 $myimap = login_imap( 'test1.lamiral.info', 993, 'test1', 'secret1',
                 1, undef,
